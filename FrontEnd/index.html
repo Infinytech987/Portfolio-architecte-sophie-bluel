@@ -17,7 +17,7 @@
         <ul>
           <li>projets</li>
           <li>contact</li>
-          <li>login</li>
+          <li><a href="login.html">login</a></li>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>
@@ -39,8 +39,25 @@
       </section>
       <section id="portfolio">
         <h2>Mes Projets</h2>
+
+        <!-- Boutons pour filtrer -->
+        <div>
+          <button class="filter-btn" onclick="filterItems('all')">Tous</button>
+          <button class="filter-btn" onclick="filterItems('categorie1')">Objets</button>
+          <button class="filter-btn" onclick="filterItems('Apcategorie2')">Appartements</button>
+          <button class="filter-btn" onclick="filterItems('categorie3')">Hôtels & restaurants</button>
+        </div>
+
+        <!-- Contenu à filtrer -->
+        <div class="item categorie1">Item Catégorie 1</div>
+        <div class="item categorie2">Item Catégorie 2</div>
+        <div class="item categorie3">Item Catégorie 3</div>
+        <div class="item categorie1">Autre Item Catégorie 1</div>
+        <div class="item categorie2">Autre Item Catégorie 2</div>
+        <div class="item categorie3">Autre Item Catégorie 3</div>
+
         <div class="gallery">
-          <figure>
+          <figure class="item categorie1">
             <img src="assets/images/abajour-tahina.png" alt="Abajour Tahina" />
             <figcaption>Abajour Tahina</figcaption>
           </figure>
