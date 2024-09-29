@@ -264,20 +264,10 @@ footer nav ul {
 }
 /* Créé par moi */
 /* Filtres */
-.filter-btn {
-  margin: 5px;
-  padding: 10px 20px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
+#categories-container {
+  display: block;
+  justify-content: center;
+  justify-items: center;
 }
-
-.filter-btn.active {
-  background-color: #0056b3;
-}
-
-.item {
-  display: none;
-  margin: 10px 0;
+.categories-filter {
 }
