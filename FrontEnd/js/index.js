@@ -4,17 +4,17 @@ document.addEventListener("DOMContentLoaded", function () {
   worksContainer.classList.add("gallery");
   categoriesContainer.appendChild(worksContainer);
 
-  // URLs du backend pour les catégories et les œuvres
+  // URLs du backend pour les catégories et les works
   const categoriesUrl = "http://localhost:5678/api/categories";
   const worksUrl = "http://localhost:5678/api/works";
 
   let categoriesMap = {}; // Dictionnaire pour stocker les galeries par ID de catégorie
-  let allWorks = []; // Pour stocker toutes les œuvres récupérées
+  let allWorks = []; // Pour stocker tous les works récupérés
   let activeCategory = "all"; // Catégorie actuellement affichée (par défaut "Tous")
 
-  // Fonction pour afficher toutes les œuvres
+  // Fonction pour afficher tous les works
   function displayWorks(works, categoryId = "all") {
-    worksContainer.innerHTML = ""; // On vide le conteneur des œuvres
+    worksContainer.innerHTML = ""; // On vide le conteneur des works
     works.forEach((work) => {
       if (categoryId === "all" || work.categoryId === categoryId) {
         const figure = document.createElement("figure");
@@ -67,14 +67,14 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Erreur lors de la récupération des catégories:", error);
     });
 
-  // Fetch des œuvres
+  // Fetch des works
   fetch(worksUrl)
     .then((response) => response.json())
     .then((works) => {
-      allWorks = works; // Stocker toutes les œuvres récupérées
-      displayWorks(allWorks); // Par défaut, on affiche toutes les œuvres
+      allWorks = works; // Stocker toutes les works récupérées
+      displayWorks(allWorks); // Par défaut, on affiche toutes les works
     })
     .catch((error) => {
-      console.error("Erreur lors de la récupération des œuvres:", error);
+      console.error("Erreur lors de la récupération des works:", error);
     });
 });
