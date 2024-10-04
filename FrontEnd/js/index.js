@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const categoriesContainer = document.getElementById("categories-container");
-  const worksContainer = document.createElement("div");
-  worksContainer.classList.add("gallery");
-  categoriesContainer.appendChild(worksContainer);
+  const categoriesElt = document.getElementById("categories");
+  const galleryElt = document.getElementById("gallery");
+  console.log(categories, gallery);
 
   // URLs du backend pour les catégories et les works
   const categoriesUrl = "http://localhost:5678/api/categories";
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fonction pour afficher tous les works
   function displayWorks(works, categoryId = "all") {
-    worksContainer.innerHTML = ""; // On vide le conteneur des works
+    galleryElt.innerHTML = ""; // On vide le conteneur des works
     works.forEach((work) => {
       if (categoryId === "all" || work.categoryId === categoryId) {
         const figure = document.createElement("figure");
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         figure.appendChild(img);
         figure.appendChild(figcaption);
-        worksContainer.appendChild(figure);
+        galleryElt.appendChild(figure);
       }
     });
   }
@@ -43,15 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const allCategoryBtn = document.createElement("button");
     allCategoryBtn.textContent = "Tous";
     allCategoryBtn.addEventListener("click", () => handleCategoryClick("all"));
-    categoriesContainer.insertBefore(allCategoryBtn, worksContainer);
+    categoriesElt.appendChild(allCategoryBtn);
 
     // Afficher les autres catégories
     categories.forEach((category) => {
       const categoryBtn = document.createElement("button");
       categoryBtn.textContent = category.name;
       categoryBtn.addEventListener("click", () => handleCategoryClick(category.id));
-      categoriesContainer.insertBefore(categoryBtn, worksContainer);
-
+      categoriesElt.appendChild(categoryBtn);
       // Sauvegarder la référence à la galerie de la catégorie
       categoriesMap[category.id] = [];
     });
