@@ -262,10 +262,9 @@ footer nav ul {
   justify-content: flex-end;
   margin: 2em;
 }
+
 /* Créé par moi */
 /* Filtres */
-#categories-container {
-  display: block;
-  justify-content: center;
-  justify-items: center;
+
+#forgot-password {
 }
