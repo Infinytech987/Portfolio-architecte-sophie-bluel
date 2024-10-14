@@ -268,3 +268,8 @@ footer nav ul {
 
 #forgot-password {
 }
+
+#error-message {
+  color: red;
+  display: none;
+}
