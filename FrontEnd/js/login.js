@@ -31,6 +31,6 @@ function login() {
       window.location.href = "./index.html"; // Redirige l'utilisateur vers la page index.html
     })
     .catch((error) => {
-      alert("Identifiant ou mot de passe incorrect"); // Affiche une alerte s'il y a une erreur
+      alert("Email ou mot de passe incorrect"); // Affiche une alerte s'il y a une erreur
     });
 }
