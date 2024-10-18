@@ -27,7 +27,7 @@ function login() {
       return response.json(); // Analyse le corps de la réponse en tant que JSON
     })
     .then((data) => {
-      sessionStorage.setItem("token", data.token); // Stocke le jeton dans le local storage
+      localStorage.setItem("token", data.token); // Stocke le jeton dans le local storage
       window.location.href = "./index.html"; // Redirige l'utilisateur vers la page index.html
     })
     .catch((error) => {

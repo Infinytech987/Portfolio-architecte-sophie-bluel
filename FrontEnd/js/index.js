@@ -77,3 +77,21 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Erreur lors de la récupération des works:", error);
     });
 });
+// Bouton Login/Logout //
+document.getElementById("authButton").addEventListener("click", function () {
+  var button = document.getElementById("authButton");
+
+  if (button.textContent === "Login") {
+    // Logique de connexion ici (par exemple, une requête pour vérifier les identifiants)
+    console.log("Connexion réussie");
+
+    // Changer le texte du bouton en 'Logout'
+    button.textContent = "Logout";
+  } else {
+    // Logique de déconnexion ici
+    console.log("Déconnexion réussie");
+
+    // Changer le texte du bouton en 'Login'
+    button.textContent = "Login";
+  }
+});
