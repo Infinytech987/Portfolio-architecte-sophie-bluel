@@ -137,7 +137,7 @@ body {
 header {
   display: flex;
   justify-content: space-between;
-  margin: 50px 0;
+  margin: 92px 0;
 }
 section {
   margin: 50px 0;
@@ -264,4 +264,41 @@ footer nav ul {
 }
 
 /* Créé par moi */
-/* Filtres */
+
+/* Catégories */
+.categories button {
+  align-items: center;
+  border-radius: 15px;
+  border: 2px, solid;
+  padding: 10px;
+}
+/* TOP */
+
+.top-banner {
+  background-color: black;
+  padding: 17px 0; /* Supprime les marges latérales pour utiliser toute la largeur de l'écran */
+  width: 100%; /* Prend toute la largeur de l'écran */
+  position: fixed; /* Fixe la bande en haut de l'écran */
+  top: 0; /* Position en haut de l'écran */
+  left: 0; /* Commence à gauche de l'écran */
+  text-align: center; /* Centre le contenu horizontalement */
+  z-index: 1000; /* Assure que la bande est toujours au-dessus des autres éléments */
+}
+
+.edit-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.edit-button i {
+  margin-right: 5px;
+  color: white;
+}
+#authLink {
+  font-weight: bold; /* Met le texte en gras */
+  color: black; /* Change la couleur du texte en noir */
+  text-decoration: none; /* Supprime le soulignement */
+}
