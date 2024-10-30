@@ -301,3 +301,12 @@ footer nav ul {
   color: black; /* Change la couleur du texte en noir */
   text-decoration: none; /* Supprime le soulignement */
 }
+
+.porfolio-title {
+  position: relative;
+}
+.edit-button2 {
+  position: absolute;
+  top: 5px;
+  margin-left: 10px;
+}
