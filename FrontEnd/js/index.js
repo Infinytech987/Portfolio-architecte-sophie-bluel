@@ -1,130 +1,82 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Ciblage des éléments nécessaires
+document.addEventListener("DOMContentLoaded", () => {
   const authLink = document.getElementById("authLink");
   const editModeBanner = document.getElementById("editModeBanner");
   const categoriesElt = document.getElementById("categories");
   const galleryElt = document.getElementById("gallery");
+  const editButton = document.querySelector(".edit-button");
 
-  // Vérification des éléments requis
-  if (!authLink || !editModeBanner || !categoriesElt || !galleryElt) {
-    console.error("Erreur : certains éléments nécessaires ne sont pas disponibles dans le DOM.");
-    return;
-  }
-
-  // URLs du backend pour les catégories et les works
   const categoriesUrl = "http://localhost:5678/api/categories";
   const worksUrl = "http://localhost:5678/api/works";
+  let allWorks = [];
 
-  let allWorks = []; // Pour stocker tous les works récupérés
+  const displayWorks = (works, categoryId = "all") => {
+    galleryElt.innerHTML = works
+      .filter((work) => categoryId === "all" || work.categoryId === categoryId)
+      .map(
+        (work) => `
+        <figure>
+          <img src="${work.imageUrl}" alt="${work.title}" />
+          <figcaption>${work.title}</figcaption>
+        </figure>`
+      )
+      .join("");
+  };
 
-  // Fonction pour afficher les works
-  function displayWorks(works, categoryId = "all") {
-    galleryElt.innerHTML = ""; // On vide le conteneur des works
-    works.forEach((work) => {
-      if (categoryId === "all" || work.categoryId === categoryId) {
-        const figure = document.createElement("figure");
-        const img = document.createElement("img");
-        img.src = work.imageUrl;
-        img.alt = work.title;
+  const handleCategoryClick = (categoryId) => displayWorks(allWorks, categoryId);
 
-        const figcaption = document.createElement("figcaption");
-        figcaption.textContent = work.title;
+  const displayCategories = (categories) => {
+    categoriesElt.innerHTML = `<button>Tous</button>` + categories.map((category) => `<button>${category.name}</button>`).join("");
+    categoriesElt.querySelectorAll("button").forEach((btn, i) => btn.addEventListener("click", () => handleCategoryClick(i ? categories[i - 1].id : "all")));
+  };
 
-        figure.appendChild(img);
-        figure.appendChild(figcaption);
-        galleryElt.appendChild(figure);
-      }
-    });
-  }
-
-  // Fonction pour gérer l'affichage de la catégorie sélectionnée
-  function handleCategoryClick(categoryId) {
-    displayWorks(allWorks, categoryId);
-  }
-
-  // Fonction pour afficher les catégories
-  function displayCategories(categories) {
-    // Ajouter une catégorie "Tous"
-    const allCategoryBtn = document.createElement("button");
-    allCategoryBtn.textContent = "Tous";
-    allCategoryBtn.addEventListener("click", () => handleCategoryClick("all"));
-    categoriesElt.appendChild(allCategoryBtn);
-
-    // Afficher les autres catégories
-    categories.forEach((category) => {
-      const categoryBtn = document.createElement("button");
-      categoryBtn.textContent = category.name;
-      categoryBtn.addEventListener("click", () => handleCategoryClick(category.id));
-      categoriesElt.appendChild(categoryBtn);
-    });
-  }
-
-  // Vérifie si l'utilisateur est connecté (présence d'un token dans localStorage)
   if (localStorage.getItem("token")) {
-    // Si l'utilisateur est connecté
-    authLink.textContent = "logout";
-    authLink.href = "#";
-    authLink.style.fontWeight = "bold";
-    authLink.style.color = "black";
-    authLink.style.textDecoration = "none";
-
-    // Afficher la bannière "Mode édition"
+    // Utilisateur connecté
+    Object.assign(authLink, { textContent: "logout", href: "#", style: { fontWeight: "bold", color: "black", textDecoration: "none" } });
     editModeBanner.style.display = "block";
+    galleryElt.style.display = "grid"; // Affiche les travaux
+    categoriesElt.style.display = "none"; // Masque les catégories
 
-    // Cacher les works et le filtre des catégories
-    galleryElt.style.display = "none";
-    categoriesElt.style.display = "none";
+    if (editButton) {
+      editButton.style.display = "inline-block"; // Affiche le bouton "Modifier"
+    }
 
-    // Gérer la déconnexion
-    authLink.addEventListener("click", function (e) {
+    authLink.addEventListener("click", (e) => {
       e.preventDefault();
       localStorage.removeItem("token");
-      window.location.href = "./login.html";
+      window.location.href = "./index.html"; // Redirige vers index.html en mode non connecté
     });
-  } else {
-    // Si l'utilisateur n'est pas connecté
-    authLink.textContent = "login";
-    authLink.href = "./login.html";
-    authLink.style.fontWeight = "bold";
-    authLink.style.color = "black";
-    authLink.style.textDecoration = "none";
 
-    // Cacher la bannière "Mode édition"
-    editModeBanner.style.display = "none";
-
-    // Afficher les catégories et les works
-    galleryElt.style.display = "grid";
-    categoriesElt.style.display = "block";
-
-    // Fetch des catégories
-    fetch(categoriesUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur lors de la récupération des catégories");
-        }
-        return response.json();
-      })
-      .then((categories) => {
-        displayCategories(categories);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des catégories:", error);
-      });
-
-    // Fetch des works
+    // Récupérer et afficher les travaux sans afficher les catégories
     fetch(worksUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur lors de la récupération des works");
-        }
-        return response.json();
-      })
+      .then((res) => (res.ok ? res.json() : Promise.reject("Erreur works")))
       .then((works) => {
-        allWorks = works; // Stocker toutes les works récupérées
-        displayWorks(allWorks); // Afficher les works
+        allWorks = works;
+        displayWorks(allWorks); // Affiche tous les travaux pour les utilisateurs connectés
       })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des works:", error);
-      });
+      .catch(console.error);
+  } else {
+    // Utilisateur non connecté
+    Object.assign(authLink, { textContent: "login", href: "./login.html", style: { fontWeight: "bold", color: "black", textDecoration: "none" } });
+    editModeBanner.style.display = "none";
+    galleryElt.style.display = "grid";
+    categoriesElt.style.display = "block"; // Affiche les catégories pour les utilisateurs non connectés
+
+    if (editButton) {
+      editButton.style.display = "none"; // Cache le bouton "Modifier"
+    }
+
+    // Récupérer et afficher les catégories et travaux avec le filtre
+    fetch(categoriesUrl)
+      .then((res) => (res.ok ? res.json() : Promise.reject("Erreur catégories")))
+      .then(displayCategories)
+      .catch(console.error);
+
+    fetch(worksUrl)
+      .then((res) => (res.ok ? res.json() : Promise.reject("Erreur works")))
+      .then((works) => {
+        allWorks = works;
+        displayWorks(allWorks);
+      })
+      .catch(console.error);
   }
 });
